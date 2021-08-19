@@ -27,12 +27,36 @@ const cartReducer = (state, action) => {
         ...existingCartItem,
         amount: existingCartItem.amount + action.item.amount,
       };
-      console.log("amount", existingCartItem.amount);
       updatedItems = [...state.items];
       updatedItems[existingCartItemIndex] = updatedItem;
-      console.log("after updatedItem", updatedItem);
     } else {
       updatedItems = state.items.concat(action.item);
+    }
+
+    return {
+      items: updatedItems,
+      totalAmount: updatedTotalAmount,
+    };
+  }
+  if (action.type === "REMOVE") {
+    //-버튼 누른 대상을 찾을수있다
+    const existingCartItemIndex = state.items.findIndex(
+      (item) => item.id === action.id
+    );
+    const existingItem = state.items[existingCartItemIndex];
+    const updatedTotalAmount = state.totalAmount - existingItem.price;
+
+    let updatedItems;
+
+    if (existingItem.amount === 1) {
+      //item이 1미만일때 삭제처리방식
+      updatedItems = state.items.filter((item) => item.id !== action.id);
+    } else {
+      const updatedItem = { ...existingItem, amount: existingItem.amount - 1 };
+      updatedItems = [...state.items];
+      updatedItems[existingCartItemIndex] = updatedItem;
+      console.log("updatedItem", updatedItem);
+      console.log("updatedItems", updatedItems);
     }
 
     return {
