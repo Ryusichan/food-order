@@ -17,6 +17,7 @@ const Cart = ({ modalClose }) => {
   const cartItems = (
     <ul className={classes["cart-items"]}>
       {cartCtx.items.map((item) => (
+        //카트에 담는 props 값전달
         <CartItem
           key={item.id}
           name={item.name}
